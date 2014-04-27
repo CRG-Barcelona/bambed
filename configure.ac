@@ -21,10 +21,20 @@ case $host in
 esac
 
 # Checks for header files.
-AC_CHECK_HEADERS([jkweb/common.h beato/bigs.h arpa/inet.h fcntl.h float.h limits.h netdb.h netinet/in.h stdlib.h string.h strings.h sys/file.h sys/socket.h sys/statvfs.h sys/time.h syslog.h termios.h unistd.h utime.h])
+AC_CHECK_HEADERS([jkweb/common.h beato/bigs.h arpa/inet.h fcntl.h float.h limits.h math.h netdb.h netinet/in.h pthread.h stdlib.h string.h strings.h sys/file.h sys/socket.h sys/statvfs.h sys/time.h syslog.h termios.h unistd.h utime.h])
 
 # REQUIRED libraries
 
+AC_SEARCH_LIBS([pthread_create], [pthread], [has_pthread=yes], [has_pthread=no])
+if test "x${has_pthread}" != xyes; then
+   AC_MSG_ERROR([
+   ---------------------------------------------
+   Unable to find libpthread required for compiling
+   libjkweb.a. Install this and run ./configure
+   with the appropriate LDFLAGS/CFLAGS/etc.
+   See the INSTALL for examples.
+   ---------------------------------------------])
+fi
 AC_SEARCH_LIBS([pow], [m], [has_math=yes], [has_math=no])
 if test "x${has_math}" != xyes; then
    AC_MSG_ERROR([
@@ -67,6 +77,9 @@ if test "x${has_libbam}" != xyes; then
 else
    AC_DEFINE([USE_BAM],[1],[Turning on BAM support])
 fi
+
+AC_SEARCH_LIBS([slSort],[jkweb])
+AC_SEARCH_LIBS([perBaseWigFree],[beato])
 
 dnl This is a manual test instead of AC_SEARCH_LIBS because the 
 dnl include file is in a subdir of the include paths.
@@ -150,10 +163,10 @@ AC_TYPE_UINT8_T
 # Checks for library functions.
 AC_FUNC_FORK
 AC_FUNC_FSEEKO
-AC_FUNC_MALLOC
+# AC_FUNC_MALLOC
 AC_FUNC_MKTIME
 AC_FUNC_MMAP
-AC_FUNC_REALLOC
+# AC_FUNC_REALLOC
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([bzero dup2 floor getcwd gettimeofday memmove memset mkdir munmap pow putenv regcomp rint select setenv socket sqrt strcasecmp strchr strcspn strdup strerror strrchr strspn strstr strtol tzset uname utime])
 
