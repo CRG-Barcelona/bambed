@@ -13,8 +13,6 @@
 #include <jkweb/bigWig.h>
 #include <beato/bigs.h>
 #include <beato/metaBig.h>
-#include <sam.h>
-#include <bam.h>
 
 void usage()
 /* Explain usage and exit. */
@@ -30,10 +28,6 @@ errAbort(
   "                                 the bam\n"
   "   -regions-every=size           Instead of specifying a bed of regions, specify a size\n"
   "                                 for regularly-spaced intervals.\n"
-/*   "   -fifty                        try to improve the correct retrieval by taking only ones\n" */
-/*   "                                 that are > 50%% with a region covering the start, and >= 50%%\n" */
-/*   "                                 within a region on the end.\n" */
-/* default */
   "   -shift=n                      shift read n bases\n"
   "   -length=l                     override insert-size length calculation from bam with l\n"
   "   -mapq=q                       minimum mapping-quality read to consider (default 20)\n"
@@ -42,10 +36,6 @@ errAbort(
   "                                 ZD tag (default uses bam flag for duplicates)\n"
   "   -include-B-reads              include \"B-reads\", tagged \"ZL\" in the bam\n"
   "   -include-bad-regions          include reads tagged \"ZR\" in the bam\n"
-/*   "   -lift-artifical               use regions from -regions to change coordinates to\n" */
-/*   "                                 be an artificial chromosome for testing\n" */
-/*   "   -lift-gap=n                   if using -lift-artificial, make the buffer between\n" */
-/*   "                                 regions n bases long (default 50)\n" */
   "   -rg-whitelist=rg1,rg2,...     perform calculation using specific read-groups in the bam.\n"
   "   -rg-blacklist=rg1,rg2,...     exclude specfic read-groups (not compatible with -rg-whitelist)\n"
   "   -flag-counts=file             (for debugging) output counts of flags of reads used to file\n"              
@@ -203,8 +193,6 @@ void bambed(char *bigfile, char *outputfile)
 	    name_type = sequence;
 	else if (sameWord(name_type_s, "fqh"))
 	    name_type = basicName;
-	else if (sameWord(name_type_s, "qual"))
-	    name_type = quality;
 	else if (sameWord(name_type_s, "dup"))
 	    name_type = duplicates;
     }

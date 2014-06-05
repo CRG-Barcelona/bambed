@@ -4929,78 +4929,6 @@ if test "x${has_htslib}" != xyes; then
    See the INSTALL for examples.
    ---------------------------------------------" "$LINENO" 5
 fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing bam_fetch" >&5
-$as_echo_n "checking for library containing bam_fetch... " >&6; }
-if ${ac_cv_search_bam_fetch+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  ac_func_search_save_LIBS=$LIBS
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char bam_fetch ();
-int
-main ()
-{
-return bam_fetch ();
-  ;
-  return 0;
-}
-_ACEOF
-for ac_lib in '' bam; do
-  if test -z "$ac_lib"; then
-    ac_res="none required"
-  else
-    ac_res=-l$ac_lib
-    LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
-  fi
-  if ac_fn_c_try_link "$LINENO"; then :
-  ac_cv_search_bam_fetch=$ac_res
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext
-  if ${ac_cv_search_bam_fetch+:} false; then :
-  break
-fi
-done
-if ${ac_cv_search_bam_fetch+:} false; then :
-
-else
-  ac_cv_search_bam_fetch=no
-fi
-rm conftest.$ac_ext
-LIBS=$ac_func_search_save_LIBS
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_bam_fetch" >&5
-$as_echo "$ac_cv_search_bam_fetch" >&6; }
-ac_res=$ac_cv_search_bam_fetch
-if test "$ac_res" != no; then :
-  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
-  has_libbam=yes
-else
-  haslibbam=no
-fi
-
-if test "x${has_libbam}" != xyes; then
-   as_fn_error $? "
-   ---------------------------------------------
-   Unable to find samtools libbam.a required for compiling
-   bambed. Install this and run ./configure
-   with the appropriate LDFLAGS/CFLAGS/etc.
-   See the INSTALL for examples.
-   ---------------------------------------------" "$LINENO" 5
-else
-
-$as_echo "#define USE_BAM 1" >>confdefs.h
-
-fi
-
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing slSort" >&5
 $as_echo_n "checking for library containing slSort... " >&6; }
 if ${ac_cv_search_slSort+:} false; then :
@@ -5054,10 +4982,80 @@ $as_echo "$ac_cv_search_slSort" >&6; }
 ac_res=$ac_cv_search_slSort
 if test "$ac_res" != no; then :
   test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
-
+  has_jkweb=yes
+else
+  has_jkweb=no
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing perBaseWigFree" >&5
+if test "x${has_jkweb}" != xyes; then
+   as_fn_error $? "
+   ---------------------------------------------
+   Unable to find libjkweb (libbeato) required for compiling
+   bambed. Install this and run ./configure
+   with the appropriate LDFLAGS/CFLAGS/etc.
+   See the INSTALL for examples.
+   ---------------------------------------------" "$LINENO" 5
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing isBamWithIndex" >&5
+$as_echo_n "checking for library containing isBamWithIndex... " >&6; }
+if ${ac_cv_search_isBamWithIndex+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_func_search_save_LIBS=$LIBS
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char isBamWithIndex ();
+int
+main ()
+{
+return isBamWithIndex ();
+  ;
+  return 0;
+}
+_ACEOF
+for ac_lib in '' beato; do
+  if test -z "$ac_lib"; then
+    ac_res="none required"
+  else
+    ac_res=-l$ac_lib
+    LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
+  fi
+  if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_search_isBamWithIndex=$ac_res
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext
+  if ${ac_cv_search_isBamWithIndex+:} false; then :
+  break
+fi
+done
+if ${ac_cv_search_isBamWithIndex+:} false; then :
+
+else
+  ac_cv_search_isBamWithIndex=no
+fi
+rm conftest.$ac_ext
+LIBS=$ac_func_search_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_search_isBamWithIndex" >&5
+$as_echo "$ac_cv_search_isBamWithIndex" >&6; }
+ac_res=$ac_cv_search_isBamWithIndex
+if test "$ac_res" != no; then :
+  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
+  has_htsbeato=yes
+else
+  has_htsbeato=no
+fi
+
+if test "x${has_htsbeato}" != xyes; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for library containing perBaseWigFree" >&5
 $as_echo_n "checking for library containing perBaseWigFree... " >&6; }
 if ${ac_cv_search_perBaseWigFree+:} false; then :
   $as_echo_n "(cached) " >&6
@@ -5110,96 +5108,26 @@ $as_echo "$ac_cv_search_perBaseWigFree" >&6; }
 ac_res=$ac_cv_search_perBaseWigFree
 if test "$ac_res" != no; then :
   test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
-
-fi
-
-
-OLDLIBS=$LIBS;
-LIBS="-ljkweb $LIBS";
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking checking for jkweb library containing needMem" >&5
-$as_echo_n "checking checking for jkweb library containing needMem... " >&6; }
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-
-         #include <jkweb/common.h>
-
-int
-main ()
-{
-
-	char *d = needMem(sizeof(char));
- 	free(d);
-	return 0;
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: -ljkweb" >&5
-$as_echo "-ljkweb" >&6; }
-        has_jkweb=yes;
+  has_beato=yes
 else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-        LIBS=$OLD_LIBS;         has_jkweb=no;
-
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-if test "x${has_jkweb}" != xyes; then
-   as_fn_error $? "
-   ---------------------------------------------
-   Unable to find libjkweb.a (from libbeato)
-   required for compiling
-   bambed. Install this and run ./configure
-   with the appropriate LDFLAGS/CFLAGS/etc.
-   See the INSTALL for examples.
-   ---------------------------------------------" "$LINENO" 5
+  has_beato=no
 fi
 
-OLDLIBS=$LIBS;
-LIBS="-lbeato $LIBS";
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking checking for beato library containing perBaseWigFree" >&5
-$as_echo_n "checking checking for beato library containing perBaseWigFree... " >&6; }
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-
-         char perBaseWigFree ();
-
-int
-main ()
-{
-
-   return perBaseWigFree();
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_link "$LINENO"; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: -lbeato" >&5
-$as_echo "-lbeato" >&6; }
-        has_beato=yes;
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-        LIBS=$OLD_LIBS;         has_beato=no;
-
-fi
-rm -f core conftest.err conftest.$ac_objext \
-    conftest$ac_exeext conftest.$ac_ext
-if test "x${has_beato}" != xyes; then
-   as_fn_error $? "
-   ---------------------------------------------
-   Unable to find libbeato.a
-   required for compiling
-   bambed. Install this and run ./configure
-   with the appropriate LDFLAGS/CFLAGS/etc.
-   See the INSTALL for examples.
-   ---------------------------------------------" "$LINENO" 5
+   if test "x${has_beato}" != xyes; then
+      as_fn_error $? "
+      ---------------------------------------------
+      Unable to find libbeato required for compiling
+      bambed. Install this and run ./configure
+      with the appropriate LDFLAGS/CFLAGS/etc.
+      See the INSTALL for examples.
+      ---------------------------------------------" "$LINENO" 5
+   else
+      as_fn_error $? "
+      ---------------------------------------------
+      Detected libbeato that was NOT compiled with
+      htslib.
+      ---------------------------------------------" "$LINENO" 5
+   fi
 fi
 
 # Large file support

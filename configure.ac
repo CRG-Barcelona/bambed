@@ -65,80 +65,34 @@ if test "x${has_htslib}" != xyes; then
    See the INSTALL for examples.
    ---------------------------------------------])
 fi
-AC_SEARCH_LIBS([bam_fetch],[bam], [has_libbam=yes],[haslibbam=no])
-if test "x${has_libbam}" != xyes; then
-   AC_MSG_ERROR([
-   ---------------------------------------------
-   Unable to find samtools libbam.a required for compiling
-   bambed. Install this and run ./configure
-   with the appropriate LDFLAGS/CFLAGS/etc.
-   See the INSTALL for examples.
-   ---------------------------------------------])
-else
-   AC_DEFINE([USE_BAM],[1],[Turning on BAM support])
-fi
-
-AC_SEARCH_LIBS([slSort],[jkweb])
-AC_SEARCH_LIBS([perBaseWigFree],[beato])
-
-dnl This is a manual test instead of AC_SEARCH_LIBS because the 
-dnl include file is in a subdir of the include paths.
-OLDLIBS=$LIBS;
-LIBS="-ljkweb $LIBS";
-AC_MSG_CHECKING([checking for jkweb library containing needMem])
-AC_LINK_IFELSE([
-    AC_LANG_PROGRAM([[
-         #include <jkweb/common.h>
-        ]],
-        [[
-	char *d = needMem(sizeof(char));
- 	free(d);
-	return 0;
-	]])],
-    [AC_MSG_RESULT([-ljkweb])
-        has_jkweb=yes;],
-     [AC_MSG_RESULT([no])
-        LIBS=$OLD_LIBS; dnl reset to old value since XXX was not found
-        has_jkweb=no;
-])
+AC_SEARCH_LIBS([slSort],[jkweb],[has_jkweb=yes],[has_jkweb=no])
 if test "x${has_jkweb}" != xyes; then
    AC_MSG_ERROR([
    ---------------------------------------------
-   Unable to find libjkweb.a (from libbeato)
-   required for compiling
+   Unable to find libjkweb (libbeato) required for compiling
    bambed. Install this and run ./configure
    with the appropriate LDFLAGS/CFLAGS/etc.
    See the INSTALL for examples.
    ---------------------------------------------])
 fi
-
-dnl This is a manual test instead of AC_SEARCH_LIBS because the 
-dnl include file is in a subdir of the include paths.
-OLDLIBS=$LIBS;
-LIBS="-lbeato $LIBS";
-AC_MSG_CHECKING([checking for beato library containing perBaseWigFree])
-AC_LINK_IFELSE([
-    AC_LANG_PROGRAM([[
-         char perBaseWigFree ();
-        ]],
-        [[
-   return perBaseWigFree();
-	]])],
-    [AC_MSG_RESULT([-lbeato])
-        has_beato=yes;],
-     [AC_MSG_RESULT([no])
-        LIBS=$OLD_LIBS; dnl reset to old value since XXX was not found
-        has_beato=no;
-])
-if test "x${has_beato}" != xyes; then
-   AC_MSG_ERROR([
-   ---------------------------------------------
-   Unable to find libbeato.a
-   required for compiling
-   bambed. Install this and run ./configure
-   with the appropriate LDFLAGS/CFLAGS/etc.
-   See the INSTALL for examples.
-   ---------------------------------------------])
+AC_SEARCH_LIBS([isBamWithIndex],[beato],[has_htsbeato=yes],[has_htsbeato=no])
+if test "x${has_htsbeato}" != xyes; then
+   AC_SEARCH_LIBS([perBaseWigFree],[beato],[has_beato=yes],[has_beato=no])
+   if test "x${has_beato}" != xyes; then
+      AC_MSG_ERROR([
+      ---------------------------------------------
+      Unable to find libbeato required for compiling
+      bambed. Install this and run ./configure
+      with the appropriate LDFLAGS/CFLAGS/etc.
+      See the INSTALL for examples.
+      ---------------------------------------------])
+   else
+      AC_MSG_ERROR([
+      ---------------------------------------------
+      Detected libbeato that was NOT compiled with 
+      htslib.  
+      ---------------------------------------------])
+   fi
 fi
 
 # Large file support
