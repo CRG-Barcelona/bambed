@@ -160,6 +160,8 @@ void bambed(char *bigfile, char *outputfile)
     if (verbose)
 	printf("loading %s... \n", bigfile);
     struct metaBig *mb = metaBigOpen(bigfile, regionsBed);
+    if (!mb)
+	errAbort("could not load %s for some reason", bigfile);
     if (verbose)
 	printf("loaded %s ok\n", bigfile);
     boolean do_cc = FALSE;
