@@ -1,5 +1,10 @@
+bambed
 .deps/*
 config.h
 config.status
 config.log
 stamp-h1
+*.bam
+tests/*.bam
+*.bai
+tests/*.bai
