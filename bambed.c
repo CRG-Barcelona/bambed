@@ -40,9 +40,10 @@ errAbort(
   "   -rg-blacklist=rg1,rg2,...     exclude specfic read-groups (not compatible with -rg-whitelist)\n"
   "   -flag-counts=file             (for debugging) output counts of flags of reads used to file\n"              
   "   -count                        output a bed4 with counts for each region specified\n"
-  "   -cc                         output split read bed for chrom capture bams (3C, Hi-C, etc)\n"
-  "   -cc-inter                   output only inter-chromosomal pairs\n"
-  "   -cc-intra                   output only intra-chromosomal pairs\n"
+  "   -cc                           output split read bed for chrom capture bams (3C, Hi-C, etc)\n"
+  "   -cc-inter                     output only inter-chromosomal pairs\n"
+  "   -cc-intra                     output only intra-chromosomal pairs\n"
+  "   -cc-name                      include name with CC output\n"
 /*   "   -pe-unpaired                  unpair the paired-end reads (requires -unextended)\n" */
   "   -stranded                     for paired-end reads that are stranded i.e. the first one in\n"
   "                                 the pair should have the strand.\n"
@@ -67,6 +68,7 @@ static struct optionSpec options[] =
    {"cc", OPTION_BOOLEAN},
    {"cc-inter", OPTION_BOOLEAN},
    {"cc-intra", OPTION_BOOLEAN},
+   {"cc-name", OPTION_BOOLEAN},
    {"regions", OPTION_STRING},
    {"regions-every", OPTION_INT},
    {"rg-whitelist", OPTION_STRING},
@@ -129,6 +131,7 @@ void output_hic(struct metaBig *mb, char *outputfile)
     FILE *output = mustOpen(outputfile, "w");
     enum hicout h = both;
     struct bed *section;
+    boolean with_name = optionExists("cc-name");
     if (optionExists("cc-inter"))
 	h = inter;
     else if (optionExists("cc-intra"))
@@ -143,8 +146,12 @@ void output_hic(struct metaBig *mb, char *outputfile)
 	    if ((h == both) || ((h == inter) && (!sameString(pb->chrom, pb->mChrom))) || 
 		((h == intra) && (sameString(pb->chrom, pb->mChrom))))
 	    {
-		fprintf(output, "%s\t%d\t%s\t%s\t%d\t%s\n", pb->chrom, pb->chromStart, pb->strand, 
-			pb->mChrom, pb->mChromStart, pb->mstrand);
+		if (with_name)
+		    fprintf(output, "%s\t%d\t%d\t%s\t%s\t%d\t%d\t%s\t%s\n", pb->chrom, pb->chromStart, 
+			pb->chromEnd, pb->strand, pb->mChrom, pb->mChromStart, pb->mChromEnd, pb->mstrand, pb->name);
+		else
+		    fprintf(output, "%s\t%d\t%d\t%s\t%s\t%d\t%d\t%s\n", pb->chrom, pb->chromStart, 
+			pb->chromEnd, pb->strand, pb->mChrom, pb->mChromStart, pb->mChromEnd, pb->mstrand);
 	    }
 	}
 	lmCleanup(&lm);
