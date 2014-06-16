@@ -98,7 +98,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_bambed_OBJECTS = bambed.$(OBJEXT)
+am_bambed_OBJECTS = bambed.$(OBJEXT) phasogram.$(OBJEXT)
 bambed_OBJECTS = $(am_bambed_OBJECTS)
 bambed_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -279,7 +279,9 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 bambed_SOURCES = \
-	bambed.c
+	bambed.c \
+	bambed.h \
+	phasogram.c
 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -389,6 +391,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bambed.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/phasogram.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

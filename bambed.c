@@ -14,6 +14,8 @@
 #include <beato/bigs.h>
 #include <beato/metaBig.h>
 
+#include "bambed.h"
+
 void usage()
 /* Explain usage and exit. */
 {
@@ -44,9 +46,10 @@ errAbort(
   "   -cc-inter                     output only inter-chromosomal pairs\n"
   "   -cc-intra                     output only intra-chromosomal pairs\n"
   "   -cc-name                      include name with CC output\n"
-/*   "   -pe-unpaired                  unpair the paired-end reads (requires -unextended)\n" */
   "   -stranded                     for paired-end reads that are stranded i.e. the first one in\n"
   "                                 the pair should have the strand.\n"
+  "   -phasogram=n (preliminary)    generate plot data of read phasing, with n equal to the maximum\n"
+  "                                 phase size.\n"
   "   -verbose                      print some progress info\n"
   );
 }
@@ -57,9 +60,6 @@ static struct optionSpec options[] =
    {"shift", OPTION_INT},
    {"length", OPTION_INT},
    {"mapq", OPTION_INT},
-   {"lift-artificial", OPTION_BOOLEAN},
-   {"lift-gap", OPTION_INT},
-   {"strand", OPTION_STRING},
    {"count", OPTION_BOOLEAN},
    {"include-duplicates", OPTION_INT},
    {"include-B-reads", OPTION_BOOLEAN},
@@ -73,7 +73,7 @@ static struct optionSpec options[] =
    {"regions-every", OPTION_INT},
    {"rg-whitelist", OPTION_STRING},
    {"rg-blacklist", OPTION_STRING},
-   {"favorites", OPTION_STRING},
+   {"phasogram", OPTION_INT},
    {"stranded", OPTION_BOOLEAN},
    {"verbose", OPTION_BOOLEAN},
    {"fifty", OPTION_BOOLEAN},
@@ -205,15 +205,7 @@ void bambed(char *bigfile, char *outputfile)
 	else if (sameWord(name_type_s, "dup"))
 	    name_type = duplicates;
     }
-    if (optionExists("strand"))
-    {
-	char *s = optionVal("strand", NULL);
-	if (s && (s[0] == '+'))
-	    strand = '+';
-	else
-	    strand = '-';
-    }
-    metaBigSetPositionalOptions(mb, length, shift, strand);
+    metaBigSetPositionalOptions(mb, length, shift, 0);
     metaBigSetNameOption(mb, name_type);
     mb->includeB = optionExists("include-B-reads");
     mb->includeBadRegions = optionExists("include-bad-regions");
@@ -226,6 +218,8 @@ void bambed(char *bigfile, char *outputfile)
 	output_hic(mb, outputfile);
     else if (optionExists("count"))
 	output_counts(mb, outputfile);
+    else if (optionExists("phasogram"))
+	do_phasogram(mb, outputfile, optionInt("phasogram", PHASOGRAM_MAX_PHASE));
     else
 	output_bed(mb, outputfile);
     metaBigClose(&mb);
